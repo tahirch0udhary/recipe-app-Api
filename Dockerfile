@@ -10,13 +10,12 @@ LABEL maintainer="tahir choudhary"
 ENV PYTHONUNBUFFERED 1
 
 # Copy requirements files to the Docker image
-COPY ./requirements.txt /requirements.txt
+COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
 
 # Set working directory
 WORKDIR /app
-
 
 # Expose port 8000 (if your app needs to listen on a specific port)
 EXPOSE 8000
@@ -27,9 +26,13 @@ ARG DEV=false
 # Install Python dependencies
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    /py/bin/pip install -r /requirements.txt && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev && \
+    /py/bin/pip install -r /tmp/requirements.txt && \
     if [ "$DEV" = "true" ]; then /py/bin/pip install -r /tmp/requirements.dev.txt; fi && \
     rm -rf /tmp && \
+    apk del .tmp-build-deps && \
     adduser --disabled-password --no-create-home django-user
 
 # Set PATH environment variable to use binaries from the virtual environment
@@ -37,3 +40,4 @@ ENV PATH="/py/bin:$PATH"
 
 # Switch to the django-user
 USER django-user
+ 
