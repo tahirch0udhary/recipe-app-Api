@@ -111,7 +111,9 @@ class PrivateIngredientsApiTests(TestCase):
         )
         recipe.ingredients.add(ingredient1)
 
-        res = self.client.get(reverse('recipe:ingredient-list'), {'assigned_only': 1})
+        res = self.client.get(
+            reverse('recipe:ingredient-list'), {'assigned_only': 1}
+        )
 
         s1 = IngredientSerializer(ingredient1)
         s2 = IngredientSerializer(ingredient2)
@@ -137,6 +139,8 @@ class PrivateIngredientsApiTests(TestCase):
         recipe1.ingredients.add(ingredient)
         recipe2.ingredients.add(ingredient)
 
-        res = self.client.get(reverse('recipe:ingredient-list'), {'assigned_only': 1})
+        res = self.client.get(
+            reverse('recipe:ingredient-list'), {'assigned_only': 1}
+        )
 
         self.assertEqual(len(res.data), 1)
