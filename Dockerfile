@@ -38,6 +38,8 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/media/uploads/recipe && \
     chown -R django-user:django-user /vol && \
     chmod -R 755 /vol && \
+    chmod -R 777 /vol/web/media/uploads/recipe && \
+    chmod -R +x /scripts && \
     chmod +x /entrypoint.sh
 
 # Switch to the django-user
