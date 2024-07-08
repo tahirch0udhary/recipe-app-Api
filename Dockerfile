@@ -1,5 +1,3 @@
-# Dockerfile
-
 # Use an official Python runtime as a parent image
 FROM python:3.9-alpine3.13
 
@@ -7,13 +5,15 @@ FROM python:3.9-alpine3.13
 LABEL maintainer="tahir choudhary"
 
 # Set environment variables
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/scripts:/py/bin:$PATH"
 
 # Copy requirements files to the Docker image
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./scripts /scripts
 COPY ./app /app
+COPY ./entrypoint.sh /entrypoint.sh
 
 # Set working directory
 WORKDIR /app
@@ -39,12 +39,14 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/static && \
     chown -R django-user:django-user /vol && \
     chmod -R 755 /vol && \
-    chmod -R +x /scripts
-
-# Set PATH environment variable to use binaries from the virtual environment
-ENV PATH="/scripts:/py/bin:$PATH"
+    chmod -R +x /scripts && \
+    chmod +x /entrypoint.sh
 
 # Switch to the django-user
 USER django-user
 
+# Set entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Default command
 CMD ["run.sh"]
