@@ -7,7 +7,9 @@ services:
     restart: always
     volumes:
       - ./app:/app
+      - postgres-data:/var/lib/postgresql/data
       - dev-static-data:/vol/web
+      - static-data:/vol/static
     environment:
       - DB_HOST=db
       - DB_NAME=${DB_NAME}
