@@ -6,17 +6,23 @@ services:
       context: .
     restart: always
     volumes:
-      - static-data:/vol/web
+      - ./app:/app
+      - dev-static-data:/vol/web
     environment:
       - DB_HOST=db
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
-      - SECRET_KEY=${DJANGO_SECRET_KEY}
-      - ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - DJANGO_SECRET_KEY=tahir
+      - DJANGO_ALLOWED_HOSTS=DJANGO_ALLOWED_HOSTS
       - DEBUG=1
     depends_on:
       - db
+    command: >
+      sh -c "mkdir -p /vol/web/media/uploads/recipe &&
+             chmod -R 755 /vol/web/media &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
 
   db:
     image: postgres:13-alpine
@@ -41,4 +47,5 @@ services:
 
 volumes:
   postgres-data:
+  dev-static-data:
   static-data:
