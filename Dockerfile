@@ -41,4 +41,6 @@ ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
 
-CMD ["run.sh"]
+RUN pip install uwsgi
+
+CMD ["run.sh", "uwsgi", "--socket", ":8080", "--workers", "4", "--master", "--enable-threads", "--module", "app.wsgi"]

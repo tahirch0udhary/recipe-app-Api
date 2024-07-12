@@ -25,7 +25,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'tahir')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-ALLOWED_HOSTS = ["ec2-16-171-129-103.eu-north-1.compute.amazonaws.com"]
+ALLOWED_HOSTS = [
+    "ec2-16-171-129-103.eu-north-1.compute.amazonaws.com",
+    "ec2-16-171-14-96.eu-north-1.compute.amazonaws.com"
+]
 ALLOWED_HOSTS.extend(
     filter(
         None,
