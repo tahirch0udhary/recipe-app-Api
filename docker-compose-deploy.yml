@@ -5,8 +5,6 @@ services:
     build:
       context: .
     restart: always
-    ports:
-      - "8000:8000"
     volumes:
       - static-data:/vol/web
     environment:
@@ -36,7 +34,7 @@ services:
     depends_on:
       - app
     ports:
-      - 8080:80
+      - 80:8000
     volumes:
       - static-data:/vol/static
 

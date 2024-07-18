@@ -1,10 +1,5 @@
-# Dockerfile
-
-# Use an official Python runtime as a parent image
 FROM python:3.9-alpine3.13
-
-# Set maintainer label
-LABEL maintainer="tahir choudhary"
+LABEL maintainer="londonappdeveloper.com"
 
 ENV PYTHONUNBUFFERED 1
 
@@ -41,6 +36,4 @@ ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
 
-RUN pip install uwsgi
-
-CMD ["run.sh", "uwsgi", "--socket", ":8080", "--workers", "4", "--master", "--enable-threads", "--module", "app.wsgi"]
+CMD ["run.sh"]
